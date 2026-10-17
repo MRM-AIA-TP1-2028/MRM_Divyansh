@@ -1,0 +1,43 @@
+# Blue Object and Tennis Ball Tracker
+
+This beginner-friendly Python program uses a live camera to find blue objects and a tennis ball at the same time. It treats them as separate objects: blue regions can have any shape, while a tennis-ball candidate must be yellow-green and roughly round.
+
+## How it works
+
+1. Read a camera frame and convert its colors to HSV. HSV makes it easier to choose a color range than working directly with red, green, and blue values.
+2. Make one mask for blue and a separate mask for tennis-ball colors. Clean small specks from the masks.
+3. Find blue regions in the first mask. For every region, measure its pixel area and bounding box, and calculate its center. There is no circle check for blue objects.
+4. Find round regions in the tennis-ball mask. For the largest likely ball, show its center, enclosing-circle radius, and pixel area.
+5. Click a blue object's box to select it. The program follows the nearest blue center from frame to frame and draws its center path. If a ball is visible, a line connects the blue center to the ball center, with the horizontal (`dx`) and vertical (`dy`) pixel difference shown.
+
+In the image, positive `dx` means the blue object is to the right of the ball; positive `dy` means it is below the ball. Areas are in px² and the radius is in pixels.
+
+## Install and run
+
+You need Python 3.9+, a camera, and OpenCV/NumPy. Install the packages:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Start the program:
+
+```bash
+python tennis_blue_tracker.py
+```
+
+Use `python tennis_blue_tracker.py --camera 1` to try camera number 1 if the default camera does not open. Click a blue object to select it, press `c` to clear the selection, or press `q`/Escape to quit.
+
+The HSV ranges are near the top of `tennis_blue_tracker.py`. Change the four range values if your lighting, camera, or object colors differ. HSV hue ranges from 0 to 179 in OpenCV; saturation and brightness range from 0 to 255.
+
+## Other possible methods
+
+- Background subtraction can find moving objects when their colors vary, but may also detect shadows and camera movement.
+- Optical flow can follow visual details between frames, but does not identify whether an object is blue or a tennis ball by itself.
+- Template matching works for a known image but can struggle when an object rotates or changes size.
+- A trained object-detection model can work better with clutter and changing light, but needs labeled examples and more setup.
+- Hough circle detection is another way to find the tennis ball's circular outline.
+
+## Limitations
+
+Color detection depends on lighting and camera white balance, so other objects with similar colors may also be detected. The blue-object tracker follows the nearest center; if objects cross or overlap, it may switch which object it follows. Adjusting the color ranges or using a trained detector can help in harder scenes.
