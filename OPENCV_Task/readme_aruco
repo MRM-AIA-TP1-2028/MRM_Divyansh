@@ -1,0 +1,31 @@
+# ArUco Marker Viewer
+
+This small program uses your webcam to find ArUco markers and show how far away they are. It can recognise 4x4, 5x5, and 6x6 markers. When a marker is visible, the camera window shows its type, number, and estimated position.
+
+## What you need
+
+- A computer with a webcam
+- Python
+- OpenCV and NumPy installed
+- A printed ArUco marker
+
+## Getting started
+
+1. Install the required packages:
+
+   ```
+   python -m pip install opencv-contrib-python numpy
+   ```
+
+2. Open a terminal in the folder containing `aruco.py` and start it:
+
+   ```
+   python aruco.py
+   ```
+
+3. Hold a printed marker in front of the webcam. Press **Q** or **Esc** to close the camera window.
+
+## A couple of tips
+
+- If the webcam does not open, the program may need a different camera number. The default setting is the first camera.
+- The distance shown is an estimate. It will be more accurate when the marker size and camera settings match your real setup. The marker size in the program is set to 5 cm by default.
